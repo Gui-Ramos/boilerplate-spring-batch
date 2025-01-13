@@ -22,4 +22,12 @@ public class AgendamentoService {
                 .map(AgendamentoMapper.INSTANCE::toDto)
                 .toList();
     }
+
+    public void saveAgendamento(AgendamentoDTO dto) {
+        this.repository.save(AgendamentoMapper.INSTANCE.fromDto(dto));
+    }
+
+    public long count() {
+        return this.repository.count();
+    }
 }

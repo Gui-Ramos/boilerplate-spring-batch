@@ -57,12 +57,6 @@ java {
     withJavadocJar() // Inclui o Javadoc no pacote
 }
 
-//reckon {
-//    defaultInferredScope = 'patch'
-//    stages 'beta', 'rc', 'final'
-//    scopeCalc = calcScopeFromProp()
-//    stageCalc = calcStageFromProp()
-//}
 
 publishing {
     publications {
@@ -74,7 +68,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Gui-Ramos/boilerplate-microservice-spring")
+            url = uri("https://maven.pkg.github.com/Gui-Ramos/boilerplate-spring-batch")
             credentials {
                 username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
                 password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
