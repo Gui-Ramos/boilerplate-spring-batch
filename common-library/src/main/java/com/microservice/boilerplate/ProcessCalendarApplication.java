@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableAspectJAutoProxy
-public class BoilerplateApplication {
+public class ProcessCalendarApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BoilerplateApplication.class, args);
+        SpringApplication.run(ProcessCalendarApplication.class, args);
     }
 }

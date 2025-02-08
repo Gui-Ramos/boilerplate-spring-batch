@@ -1,1 +1,3 @@
-rootProject.name = 'boilerplate'
+rootProject.name = 'boilerplate-spring-batch'
+include 'process-calendar-job'
+include 'common-library'

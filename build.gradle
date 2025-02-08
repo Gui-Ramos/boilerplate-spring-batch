@@ -1,15 +1,75 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.4'
-    id 'io.spring.dependency-management' version '1.1.6'
+    id 'io.spring.dependency-management' version '1.1.0'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'com.diffplug.spotless' version '6.25.0'
     id 'maven-publish'
+    id 'org.springframework.boot' version '3.4.0'
     id 'org.liquibase.gradle' version '2.2.0'
-//    id 'org.ajoberstar.reckon' version '0.19.1' // Para versionamento semântico
 }
 
-apply from: 'gradle/plugins.gradle'
-apply from: 'gradle/project-config.gradle'
-apply from: 'gradle/dependencies.gradle'
-apply from: 'gradle/tasks.gradle'
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-batch'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+        //    implementation 'org.springframework.batch:spring-batch-core'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+        // Spring Test Dependencies
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//        testImplementation 'org.springframework.test:spring-batch-test'
+        testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        testImplementation 'com.h2database:h2'
+
+        //Utils
+        implementation 'com.diffplug.spotless:spotless-lib:2.45.0'
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven-publish'
+
+    group = 'com.microservice.boilerplate'
+
+    version = project.findProperty("${project.name}Version") ?: "1.0.0"  // Usa a versão definida no gradle.properties
+
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifactId = project.name  // Nome do módulo como artifactId
+                version = project.version  // Versão do submódulo
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/Gui-Ramos/boilerplate-spring-batch")
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+    }
+}

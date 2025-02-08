@@ -15,21 +15,6 @@ repositories {
     mavenCentral()
 }
 
-liquibase {
-    activities {
-        main {
-            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
-            classpath 'src/main/resources'
-            referenceUrl 'hibernate:spring:com.microservice.boilerplate.model?dialect=org.hibernate.dialect.PostgreSQLDialect'
-            url 'jdbc:postgresql://localhost:5433/postgres'
-            username 'postgres'
-            password 'admin'
-            driver 'org.postgresql.Driver'
-        }
-    }
-    runList = "main"
-}
-
 spotless {
     java {
         target fileTree('.') {
@@ -58,21 +43,3 @@ java {
 }
 
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-    version = project.version
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Gui-Ramos/boilerplate-spring-batch")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
