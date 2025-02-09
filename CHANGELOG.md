@@ -1,3 +1,11 @@
+# [1.0.0-beta.5](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2025-02-09)
+
+
+### Bug Fixes
+
+* **common-library,process-calendar-job:** add install of @semantic-release/exec ([e47888e](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/e47888e86a239da796a604c8dec13773e2ce98e3))
+* **common-library,process-calendar-job:** run build and publish to different modules ([5caa97c](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/5caa97c58bcd6c6690fb367c5e5ff47ba38b398b))
+
 #  (2025-01-04)
 
 
@@ -98,6 +106,3 @@
 * changelog auto generated in pipeline with conventional-changelog-cli ([2f27582](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/2f2758233a65e9eff80ea38bb189f9fbbdef327a))
 * changelog auto generated in pipeline with conventional-changelog-cli ([65475e1](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/65475e18ac3ea23b854ec2c196ed67670d8fe540))
 * modularização do gradle, e implementação de publicação de artefato no maven central repository ([ed8e629](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/ed8e629f95fc446ac102d14a60160707ce9e106d))
-
-
-
