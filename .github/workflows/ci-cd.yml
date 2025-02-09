@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm init 
+          npm init -y
           npm install
 
       - name: Run semantic-release
