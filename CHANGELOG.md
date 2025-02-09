@@ -1,3 +1,10 @@
+# [1.0.0-beta.7](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2025-02-09)
+
+
+### Bug Fixes
+
+* **common-library,process-calendar-job:** update job release to output version ([7169233](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/71692337831e774935d0c2914392020946fa2065))
+
 # [1.0.0-beta.6](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2025-02-09)
 
 
