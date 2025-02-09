@@ -36,8 +36,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     outputs:
-      common_library_version: ${{ steps.set-versions.outputs.COMMON_LIBRARY_VERSION }}
-      process_calendar_job_version: ${{ steps.set-versions.outputs.PROCESS_CALENDAR_JOB_VERSION }}
+      module_versions: ${{ steps.set-versions.outputs.module_versions }}
     permissions:
       pull-requests: write
       contents: write
