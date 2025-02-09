@@ -1,3 +1,10 @@
+# [1.0.0-beta.9](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2025-02-09)
+
+
+### Bug Fixes
+
+* **common-library,process-calendar-job:** checkout repository on build ([6943f23](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/6943f23c9c3dcde2a50b883a9fd91bcfe9402264))
+
 # [1.0.0-beta.8](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2025-02-09)
 
 
