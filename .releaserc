@@ -22,27 +22,26 @@
     ],
     "@semantic-release/github"
   ],
-  // Configura cada submódulo
-submodules: [
+"submodules": [
   {
-    path: 'process-calendar-job',
-    version: '1.0.0',  // A versão inicial do submódulo
-    plugins: [
-      '@semantic-release/commit-analyzer',
-      '@semantic-release/release-notes-generator',
-      '@semantic-release/changelog',
-      '@semantic-release/git',
+    "path": "process-calendar-job",
+    "version": "1.0.0",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/git",
     ]
   },
   {
-    path: 'common-library',
-    version: '1.0.0',
-    plugins: [
-      '@semantic-release/commit-analyzer',
-      '@semantic-release/release-notes-generator',
-      '@semantic-release/changelog',
-      '@semantic-release/git',
+    "path": "common-library",
+    "version": "1.0.0",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/git",
     ]
   }
-]
+  ]
 }
