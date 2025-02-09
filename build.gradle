@@ -73,3 +73,9 @@ subprojects {
         }
     }
 }
+
+tasks.register('installLocalGitHook', Copy) {
+    from 'scripts'
+    into '.git/hooks'
+    fileMode 0775
+}

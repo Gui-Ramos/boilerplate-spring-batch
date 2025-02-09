@@ -8,8 +8,36 @@ on:
       - main
 
 jobs:
-  sematic-release:
+
+  setup:
     runs-on: ubuntu-latest
+    outputs:
+      workspace: ${{ github.workspace }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          server-id: github
+
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      common_library_version: ${{ steps.set-versions.outputs.COMMON_LIBRARY_VERSION }}
+      process_calendar_job_version: ${{ steps.set-versions.outputs.PROCESS_CALENDAR_JOB_VERSION }}
     permissions:
       pull-requests: write
       contents: write
@@ -32,86 +60,51 @@ jobs:
           npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github
 
       - name: Run semantic-release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
-      actions: write
-      packages: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - uses: actions/checkout@v4
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'corretto'
-          server-id: github
-
-      - name: Download Tags Locally
-        run: |
-          git fetch --tags   
-
-      # Verifica se as tags foram baixadas corretamente
-      - name: List tags
-        run: git tag -l  # Isso lista todas as tags
-
-      - name: Fetch complete history
-        run: |
-          git fetch --unshallow
-          git fetch --tags
-
-      - name: Set up Node.js and Install Standard Version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: |
-          npm init -y
-          npm install
-          npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/exec
-
-      # 6. Gerar nova versão beta com `standard-version`
-      - name: Bump Beta Version
         run: |
           VERSION=$(npx semantic-release)
           echo "Determined version: $VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Check if the tag exists, and skip publish if it does
-      - name: Check if Tag Exists
-        id: check_tag
+      - name: Capture versions from semantic-release
+        id: set-versions
         run: |
-          TAG=$(node -p "require('./package.json').version")
-          echo "Checking for tag $TAG"
-          if git rev-parse "refs/tags/$TAG" >/dev/null 2>&1; then
-            echo "Tag $TAG already exists. Skipping publish."
-            echo "skip_publish=true" >> $GITHUB_ENV
-          else
-            echo "Tag $TAG does not exist. Proceeding with publish."
-            echo "skip_publish=false" >> $GITHUB_ENV
+          echo "🔍 Capturando versões geradas pelo semantic-release..."
+          
+          # Define a lista de módulos que devem ser rastreados
+          MODULES=("common-library" "process-calendar-job")
+          
+          # Inicializa um JSON vazio para armazenar as versões
+          MODULE_VERSIONS_JSON="{"
+          
+          for MODULE in "${MODULES[@]}"; do
+            VAR_NAME=$(echo "$MODULE" | tr '-' '_' | tr '[:lower:]' '[:upper:]')_VERSION
+            VERSION=${!VAR_NAME}
+          
+            if [[ -n "$VERSION" ]]; then
+              echo "$VAR_NAME=$VERSION" >> $GITHUB_ENV
+              MODULE_VERSIONS_JSON+="\"$MODULE\": \"$VERSION\", "
+            fi
+          done
+          
+          # Remove a última vírgula e fecha o JSON
+          MODULE_VERSIONS_JSON="${MODULE_VERSIONS_JSON%, } }"
+          echo "module_versions=$MODULE_VERSIONS_JSON" >> $GITHUB_OUTPUT
+          
+          echo "📦 Versões capturadas: $MODULE_VERSIONS_JSON"
+
+  build-modules:
+    runs-on: ubuntu-latest
+    needs: [ release ]
+    strategy:
+      matrix:
+        module: [ common-library, process-calendar-job ]
+    if: needs.release.outputs.module_versions != ''
+    steps:
+      - name: Build and Publish ${{ matrix.module }}
+        run: |
+          VERSION=$(jq -r '.["${{ matrix.module }}"]' <<< '${{ needs.release.outputs.module_versions }}')
+          if [[ "$VERSION" != "null" ]]; then
+            echo "📦 Buildando ${{ matrix.module }} versão $VERSION"
+            ./gradlew :${{ matrix.module }}:build -P${{ matrix.module }}Version=$VERSION
           fi
-
-      - name: Unit Tests
-        if: env.skip_publish == 'false'
-        run: ./gradlew test
-
-      - name: Publish to GitHub Packages
-        if: env.skip_publish == 'false'
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "Determined version: $VERSION"
-          ./gradlew clean publish -Pversion=$VERSION
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}

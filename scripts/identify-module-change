@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Verify witch modules was modified
+CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+
+if echo "$CHANGED_FILES" | grep -q '^process-calendar-job/'; then
+  echo "🔄 O módulo process-calendar-job foi modificado!"
+  echo "🚀 Buildando com a versão: $VERSION"
+  ./gradlew clean :process-calendar-job:publish -PprocessCalendarJobVersion=$VERSION
+fi
+
+if echo "$CHANGED_FILES" | grep -q '^common-library/'; then
+  echo "🔄 O módulo common-library foi modificado!"
+  echo "🚀 Buildando com a versão: $VERSION"
+  ./gradlew clean :common-library:publish -PcommonLibraryVersion=$VERSION
+fi
