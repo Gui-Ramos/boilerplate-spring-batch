@@ -10,6 +10,12 @@ on:
 jobs:
   sematic-release:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+      actions: write
+      packages: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
