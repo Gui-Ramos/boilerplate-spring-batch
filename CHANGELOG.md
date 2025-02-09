@@ -1,3 +1,10 @@
+# [1.0.0-beta.8](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2025-02-09)
+
+
+### Bug Fixes
+
+* **common-library,process-calendar-job:** remove changelog file ([d879f83](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/d879f833c9e1fa4c7eb47626b1d6487bd8cae475))
+
 # [1.0.0-beta.7](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2025-02-09)
 
 
