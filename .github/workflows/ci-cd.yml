@@ -99,7 +99,7 @@ jobs:
     strategy:
       matrix:
         module: [ common-library, process-calendar-job ]
-    if: needs.release.outputs.module_versions != ''
+    if: ${{ needs.release.outputs.module_versions != '' }}
     steps:
       - name: Build and Publish ${{ matrix.module }}
         run: |
