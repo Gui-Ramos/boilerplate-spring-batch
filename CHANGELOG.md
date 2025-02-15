@@ -1,3 +1,10 @@
+# [1.0.0-beta.10](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2025-02-09)
+
+
+### Bug Fixes
+
+* **common-library,process-calendar-job:** setup java on build-modules job ([de31fda](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/de31fda23060def86f668637004069efab40b746))
+
 # [1.0.0-beta.9](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2025-02-09)
 
 
