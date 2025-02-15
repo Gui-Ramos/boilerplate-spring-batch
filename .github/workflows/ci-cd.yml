@@ -118,3 +118,5 @@ jobs:
             echo "📦 Buildando ${{ matrix.module }} versão $VERSION"
             ./gradlew :${{ matrix.module }}:publish -P${{ matrix.module }}Version=$VERSION
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
