@@ -1,3 +1,10 @@
+# [1.0.0-beta.11](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2025-02-15)
+
+
+### Bug Fixes
+
+* **process-calendar-job:** setup common-library as internal lib ([829d72f](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/829d72f1b162330ef53c7bbd5096828132328253))
+
 # [1.0.0-beta.10](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2025-02-09)
 
 
