@@ -1,3 +1,10 @@
+# [1.0.0-beta.12](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2025-02-15)
+
+
+### Bug Fixes
+
+* **process-calendar-job:** set permission to step Build and Publish ([ec408e6](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/ec408e664dfda6e6d76be4e2a6e66bc4b7679b92))
+
 # [1.0.0-beta.11](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2025-02-15)
 
 
