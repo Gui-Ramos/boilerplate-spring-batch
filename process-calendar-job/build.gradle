@@ -1,0 +1,56 @@
+
+plugins {
+    id 'org.springframework.boot' version '3.4.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+version = project.findProperty("processCalendarJobVersion") ?: "1.0.0"
+
+tasks.jar {
+    archiveBaseName.set('process-calendar-job')  // Define o nome do arquivo JAR
+}
+
+dependencies {
+    implementation project(':common-library')
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //    implementation 'org.springframework.batch:spring-batch-core'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // Spring Test Dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//        testImplementation 'org.springframework.test:spring-batch-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'com.h2database:h2'
+
+    //Utils
+    implementation 'com.diffplug.spotless:spotless-lib:2.45.0'
+}
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        toggleOffOn()
+        palantirJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
