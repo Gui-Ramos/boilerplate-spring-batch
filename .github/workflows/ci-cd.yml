@@ -95,6 +95,11 @@ jobs:
   build-modules:
     runs-on: ubuntu-latest
     needs: [ release ]
+    permissions:
+      pull-requests: write
+      contents: write
+      actions: write
+      packages: write
     strategy:
       matrix:
         module: [ process-calendar-job ]
