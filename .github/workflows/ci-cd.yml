@@ -15,9 +15,8 @@ jobs:
       workspace: ${{ github.workspace }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -45,7 +44,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -59,38 +58,25 @@ jobs:
           npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/exec
 
       - name: Run semantic-release
+        id: semantic-release
         run: |
-          VERSION=$(npx semantic-release)
-          echo "Determined version: $VERSION"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Capture versions from semantic-release
-        id: set-versions
-        run: |
-          echo "🔍 Capturando versões geradas pelo semantic-release..."
-          
-          # Define a lista de módulos que devem ser rastreados
-          MODULES=("common-library" "process-calendar-job")
-          
-          # Inicializa um JSON vazio para armazenar as versões
-          MODULE_VERSIONS_JSON="{"
-          
-          for MODULE in "${MODULES[@]}"; do
-            VAR_NAME=$(echo "$MODULE" | tr '-' '_' | tr '[:lower:]' '[:upper:]')_VERSION
-            VERSION=${!VAR_NAME}
-          
-            if [[ -n "$VERSION" ]]; then
-              echo "$VAR_NAME=$VERSION" >> $GITHUB_ENV
-              MODULE_VERSIONS_JSON+="\"$MODULE\": \"$VERSION\", "
+          echo "{}" > versions.json
+          MODULES=(common-library process-calendar-job)
+          CHANGED_MODULES=()
+          for module in "${MODULES[@]}"; do
+            if git diff --name-only HEAD~1 HEAD | grep -q "$module/"; then
+              CHANGED_MODULES+=("$module")
             fi
           done
-          
-          # Remove a última vírgula e fecha o JSON
-          MODULE_VERSIONS_JSON="${MODULE_VERSIONS_JSON%, } }"
-          echo "module_versions=$MODULE_VERSIONS_JSON" >> $GITHUB_OUTPUT
-          
-          echo "📦 Versões capturadas: $MODULE_VERSIONS_JSON"
+          for module in "${CHANGED_MODULES[@]}"; do
+            VERSION=$(npx semantic-release --branches main --ci false | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+            if [[ -n "$VERSION" ]]; then
+              jq --arg module "$module" --arg version "$VERSION" '. + {($module): $version}' versions.json > temp.json && mv temp.json versions.json
+            fi
+          done
+          echo "module_versions=$(cat versions.json)" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-modules:
     runs-on: ubuntu-latest
@@ -103,12 +89,11 @@ jobs:
     strategy:
       matrix:
         module: [ common-library, process-calendar-job ]
-    if: ${{ needs.release.outputs.module_versions != '' }}
+    if: ${{ needs.release.outputs.module_versions != '{}' }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -118,10 +103,10 @@ jobs:
 
       - name: Build and Publish ${{ matrix.module }}
         run: |
-          VERSION=$(jq -r '.["${{ matrix.module }}"]' <<< '${{ needs.release.outputs.module_versions }}')
+          VERSION=$(jq -r '."${{ matrix.module }}"' <<< '${{ needs.release.outputs.module_versions }}')
           if [[ "$VERSION" != "null" ]]; then
             echo "📦 Buildando ${{ matrix.module }} versão $VERSION"
             ./gradlew :${{ matrix.module }}:publish -P${{ matrix.module }}Version=$VERSION
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

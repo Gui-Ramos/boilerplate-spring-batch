@@ -11,64 +11,73 @@
     }
   ],
   "plugins": [
-    [
-        "@semantic-release/commit-analyzer",
-        {
-            "preset": "angular",
-            "releaseRules": [
-              {"scope": "common-library", "release": "minor"},
-              {"scope": "process-calendar-job", "release": "minor"}
-            ]
-        }
-    ],
-    [
-      "@semantic-release/release-notes-generator",
-      {
-        "preset": "angular"
-      }
-    ],
     "@semantic-release/changelog",
-    [
-      "@semantic-release/exec",
-      {
-        "prepareCmd": "echo '🔹 Versão gerada: common-library=${nextRelease.version}' && echo '🔹 Versão gerada: process-calendar-job=${nextRelease.version}'",
-        "publishCmd": "echo 'COMMON_LIBRARY_VERSION=${nextRelease.version}' >> $GITHUB_ENV && echo 'PROCESS_CALENDAR_JOB_VERSION=${nextRelease.version}' >> $GITHUB_ENV"
-      }
-    ],
-    [
-      "@semantic-release/npm",
-      {
-        "npmPublish": false
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["CHANGELOG.md"],
-        "message": "chore(release): publish [skip ci]"
-      }
-    ],
+    "@semantic-release/git",
     "@semantic-release/github"
   ],
   "submodules": [
     {
-        "path": "common-library",
-        "version": "1.0.0",
-        "plugins": [
+      "path": "common-library",
+      "version": "1.0.0",
+      "plugins": [
+        [
           "@semantic-release/commit-analyzer",
+          {
+            "preset": "angular"
+          }
+        ],
+        [
           "@semantic-release/release-notes-generator",
-          "@semantic-release/changelog",
-          "@semantic-release/git"
+          {
+            "preset": "angular"
+          }
+        ],
+        "@semantic-release/changelog",
+        [
+          "@semantic-release/npm",
+          {
+            "npmPublish": false
+          }
+        ],
+        [
+          "@semantic-release/git",
+          {
+            "assets": ["CHANGELOG.md"],
+            "message": "chore(release): publish common-library [skip ci]"
+          }
         ]
+      ]
     },
     {
       "path": "process-calendar-job",
       "version": "1.0.0",
       "plugins": [
-        "@semantic-release/commit-analyzer",
-        "@semantic-release/release-notes-generator",
+        [
+          "@semantic-release/commit-analyzer",
+          {
+            "preset": "angular"
+          }
+        ],
+        [
+          "@semantic-release/release-notes-generator",
+          {
+            "preset": "angular"
+          }
+        ],
         "@semantic-release/changelog",
-        "@semantic-release/git"
+        [
+          "@semantic-release/npm",
+          {
+            "npmPublish": false
+          }
+        ],
+        [
+          "@semantic-release/git",
+          {
+            "assets": ["CHANGELOG.md"],
+            "message": "chore(release): publish process-calendar-job [skip ci]"
+          }
+        ]
       ]
     }
   ]
