@@ -81,7 +81,7 @@ jobs:
         id: set-versions
         run: |
           echo "🔍 Capturando versões geradas pelo Changesets..."
-          MODULE_VERSIONS_JSON=$(jq -n 'reduce inputs as $item ({}; . + {($item.name): $item.version})' **/package.json | jq -s 'add')
+          MODULE_VERSIONS_JSON=$(jq -n 'reduce inputs as $item ({}; . + {($item.name): $item.version})' ./package.json | jq -s 'add')
           echo "module_versions=$MODULE_VERSIONS_JSON" >> $GITHUB_ENV
           echo "📦 Versões capturadas: $MODULE_VERSIONS_JSON"
 
