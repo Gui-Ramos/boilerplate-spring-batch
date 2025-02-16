@@ -55,8 +55,8 @@ liquibase {
     runList = "main"
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.compilerArgs.add("-parameters")
+tasks.jar {
+    archiveBaseName.set('common-library')  // Define o nome do arquivo JAR
 }
 
 spotless {

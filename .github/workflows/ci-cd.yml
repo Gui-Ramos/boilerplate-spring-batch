@@ -71,7 +71,7 @@ jobs:
           echo "🔍 Capturando versões geradas pelo semantic-release..."
           
           # Define a lista de módulos que devem ser rastreados
-          MODULES=("process-calendar-job")
+          MODULES=("common-library", "process-calendar-job")
           
           # Inicializa um JSON vazio para armazenar as versões
           MODULE_VERSIONS_JSON="{"
@@ -102,7 +102,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        module: [ process-calendar-job ]
+        module: [ common-library, process-calendar-job ]
     if: ${{ needs.release.outputs.module_versions != '' }}
     steps:
       - name: Checkout repository

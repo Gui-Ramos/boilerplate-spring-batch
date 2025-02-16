@@ -8,6 +8,13 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://maven.pkg.github.com/Gui-Ramos/boilerplate-spring-batch"
+        credentials {
+            username = 'Gui-Ramos'
+            password = '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'
+        }
+    }
 }
 
 version = project.findProperty("processCalendarJobVersion") ?: "1.0.0"
@@ -17,7 +24,7 @@ tasks.jar {
 }
 
 dependencies {
-    implementation project(':common-library')
+    implementation ('com.microservice.boilerplate:common-library:1.0.0')
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'

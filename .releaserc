@@ -16,6 +16,7 @@
         {
             "preset": "angular",
             "releaseRules": [
+              {"scope": "common-library", "release": "minor"}
               {"scope": "process-calendar-job", "release": "minor"}
             ]
         }
@@ -30,8 +31,8 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "echo '🔹 Versão gerada: process-calendar-job=${nextRelease.version}'",
-        "publishCmd": "echo 'PROCESS_CALENDAR_JOB_VERSION=${nextRelease.version}' >> $GITHUB_ENV"
+        "prepareCmd": "echo '🔹 Versão gerada: common-library=${nextRelease.version}' && echo '🔹 Versão gerada: process-calendar-job=${nextRelease.version}'",
+        "publishCmd": "echo 'COMMON_LIBRARY_VERSION=${nextRelease.version}' >> $GITHUB_ENV && echo 'PROCESS_CALENDAR_JOB_VERSION=${nextRelease.version}' >> $GITHUB_ENV"
       }
     ],
     [
@@ -50,6 +51,16 @@
     "@semantic-release/github"
   ],
   "submodules": [
+    {
+        "path": "common-library",
+        "version": "1.0.0",
+        "plugins": [
+          "@semantic-release/commit-analyzer",
+          "@semantic-release/release-notes-generator",
+          "@semantic-release/changelog",
+          "@semantic-release/git"
+        ]
+      },
     {
       "path": "process-calendar-job",
       "version": "1.0.0",
