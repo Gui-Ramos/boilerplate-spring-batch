@@ -6,16 +6,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
-//repositories {
-//    mavenCentral()
-//    maven {
-//        url "https://maven.pkg.github.com/Gui-Ramos/boilerplate-spring-batch"
-//        credentials {
-//            username = 'Gui-Ramos'
-//            password = ''
-//        }
-//    }
-//}
+
 
 version = project.findProperty("processCalendarJobVersion") ?: "1.0.0"
 
