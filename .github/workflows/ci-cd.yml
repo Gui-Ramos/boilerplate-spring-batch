@@ -56,7 +56,7 @@ jobs:
               jq --arg module "$module" --arg version "$VERSION" '. + {($module): $version}' versions.json > temp.json && mv temp.json versions.json
             fi
           done
-          echo "module_versions=$(cat versions.json)" >> $GITHUB_OUTPUT
+          echo "module_versions=$(jq -c . versions.json)" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
