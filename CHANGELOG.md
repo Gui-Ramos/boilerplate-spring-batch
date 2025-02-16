@@ -1,3 +1,10 @@
+# [1.0.0-beta.15](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2025-02-16)
+
+
+### Bug Fixes
+
+* **common-library:** adjusts Capture versions from semantic-release ([3fcf1da](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/3fcf1da909d63a17e0f15c879af83e471a59c70c))
+
 # [1.0.0-beta.14](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2025-02-16)
 
 
