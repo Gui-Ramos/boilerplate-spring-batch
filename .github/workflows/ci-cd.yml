@@ -59,6 +59,12 @@ jobs:
             git push origin "${module}-v${version}"
           done
 
+      - name: Config Git Identity
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+
       - name: Criar changelog usando Conventional Commits
         run: |
           npx conventional-changelog -p conventionalcommits -i CHANGELOG.md -s
