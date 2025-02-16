@@ -36,12 +36,9 @@ jobs:
           npm install
           npm install --save-dev @changesets/cli @changesets/apply-release-plan conventional-changelog-conventionalcommits
 
-      - name: Fetch all branches
-        run: git fetch --all --unshallow
-
       - name: Gerar versões automaticamente com Conventional Commits
         run: |
-          npx changeset status --json > changeset-status.json
+          npx changeset status --since=develop --json > changeset-status.json
           if [[ $(jq '.releases | length' changeset-status.json) -eq 0 ]]; then
             echo "⚠️ Nenhuma alteração encontrada para versionamento."
             exit 0
