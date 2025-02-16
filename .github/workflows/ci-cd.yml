@@ -25,11 +25,6 @@ jobs:
         with:
           fetch-depth: 0  # Garante que todo o histórico do repositório seja obtido
 
-      - name: Ensure full git history
-        run: |
-          git fetch --unshallow || true
-          git fetch --all
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -37,36 +32,21 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm init -y
           npm install
-          npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/exec
+          npm install --save-dev @changesets/cli
 
-      - name: Run semantic-release
-        id: semantic-release
+      - name: Create and apply Changesets versioning
+        id: changesets
         run: |
-          echo "{}" > versions.json
-          MODULES=(common-library process-calendar-job)
-          CHANGED_MODULES=()
-          LAST_COMMIT=$(git rev-parse HEAD~1 2>/dev/null || echo "")
-          if [[ -n "$LAST_COMMIT" ]]; then
-            for module in "${MODULES[@]}"; do
-              if git diff --name-only $LAST_COMMIT HEAD | grep -q "$module/"; then
-                CHANGED_MODULES+=("$module")
-              fi
-            done
-          else
-            echo "🔍 Nenhum commit anterior encontrado, assumindo todos os módulos como modificados."
-            CHANGED_MODULES=("${MODULES[@]}")
-          fi
-          for module in "${CHANGED_MODULES[@]}"; do
-            VERSION=$(npx semantic-release --dry-run --branches main | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-            if [[ -n "$VERSION" ]]; then
-              jq --arg module "$module" --arg version "$VERSION" '. + {($module): $version}' versions.json > temp.json && mv temp.json versions.json
-            fi
-          done
-          echo "module_versions=$(jq -c . versions.json)" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          npx changeset version
+
+      - name: Capture versions from Changesets
+        id: set-versions
+        run: |
+          echo "🔍 Capturando versões geradas pelo Changesets..."
+          MODULE_VERSIONS_JSON=$(jq -n 'reduce inputs as $item ({}; . + {($item.name): $item.version})' modules/*/build.gradle.kts | jq -s 'add')
+          echo "module_versions=$MODULE_VERSIONS_JSON" >> $GITHUB_OUTPUT
+          echo "📦 Versões capturadas: $MODULE_VERSIONS_JSON"
 
   build-modules:
     runs-on: ubuntu-latest
@@ -78,18 +58,13 @@ jobs:
       packages: write
     strategy:
       matrix:
-        module: [ common-library, process-calendar-job ]
+        module: ${{ fromJSON(needs.release.outputs.module_versions) != '{}' && fromJSON(needs.release.outputs.module_versions) || [] }}
     if: ${{ needs.release.outputs.module_versions != '{}' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Garante que todo o histórico do repositório seja obtido
-
-      - name: Ensure full git history
-        run: |
-          git fetch --unshallow || true
-          git fetch --all
 
       - name: Set up JDK 21
         uses: actions/setup-java@v3
@@ -103,7 +78,7 @@ jobs:
           VERSION=$(jq -r '."${{ matrix.module }}" // empty' <<< '${{ needs.release.outputs.module_versions }}')
           if [[ -n "$VERSION" ]]; then
             echo "📦 Buildando ${{ matrix.module }} versão $VERSION"
-            ./gradlew :${{ matrix.module }}:publish -P${{ matrix.module }}Version=$VERSION
+            ./gradlew :modules:${{ matrix.module }}:publish -P${{ matrix.module }}Version=$VERSION
           else
             echo "⚠️ Nenhuma versão encontrada para ${{ matrix.module }}, pulando build."
           fi
