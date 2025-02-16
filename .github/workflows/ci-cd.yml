@@ -48,16 +48,16 @@ jobs:
           npx changeset version
 
           # Commit das mudanças
-          git add .
-          git commit -m "chore(release): versão gerada automaticamente [skip ci]"
-          git push
+          # git add .
+          # git commit -m "chore(release): versão gerada automaticamente [skip ci]"
+          # git push
 
           # Criar tags para cada versão
-          for module in $(jq -r '.releases[].name' changeset-status.json); do
-            version=$(jq -r --arg name "$module" '.releases[] | select(.name == $name) | .newVersion' changeset-status.json)
-            git tag "${module}-v${version}"
-            git push origin "${module}-v${version}"
-          done
+          # for module in $(jq -r '.releases[].name' changeset-status.json); do
+            # version=$(jq -r --arg name "$module" '.releases[] | select(.name == $name) | .newVersion' changeset-status.json)
+            # git tag "${module}-v${version}"
+            # git push origin "${module}-v${version}"
+          # done
 
       - name: Config Git Identity
         run: |
@@ -71,6 +71,11 @@ jobs:
           git add CHANGELOG.md
           git commit -m "docs: Atualiza CHANGELOG automaticamente [skip ci]"
           git push
+
+      - name: Verificar se package.json está presente
+        run: |
+          ls -l
+          cat package.json
 
       - name: Capture versions from Changesets
         id: set-versions
