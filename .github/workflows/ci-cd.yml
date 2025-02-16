@@ -88,11 +88,14 @@ jobs:
       contents: write
       actions: write
       packages: write
-    strategy:
-      matrix:
-        module: ${{ fromJSON(needs.release.outputs.module_versions || '[]') }}
-    if: ${{ needs.release.outputs.module_versions != '{}' }}
     steps:
+      - name: Verificar se há módulos para buildar
+        run: |
+          if [[ '${{ needs.release.outputs.module_versions }}' == '{}' ]]; then
+            echo "🚫 Nenhum módulo para buildar. Finalizando job."
+            exit 0
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -115,4 +118,4 @@ jobs:
             echo "⚠️ Nenhuma versão encontrada para ${{ matrix.module }}, pulando build."
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: $
