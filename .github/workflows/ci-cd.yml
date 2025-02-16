@@ -83,7 +83,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        module: ${{ fromJSON(needs.release.outputs.module_versions) != '{}' && fromJSON(needs.release.outputs.module_versions) || [] }}
+        module: ${{ fromJSON(needs.release.outputs.module_versions || '[]') }}
     if: ${{ needs.release.outputs.module_versions != '{}' }}
     steps:
       - name: Checkout repository
