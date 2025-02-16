@@ -60,7 +60,7 @@
           "@semantic-release/changelog",
           "@semantic-release/git"
         ]
-      },
+    },
     {
       "path": "process-calendar-job",
       "version": "1.0.0",
