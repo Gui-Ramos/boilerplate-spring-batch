@@ -1,11 +1,11 @@
 {
-  "changelog": "@changesets/cli/changelog",
+  "changelog": ["@changesets/changelog-github", {"preset": "conventionalcommits"}, { "repo": "boilerplate-spring-batch" }],
   "commit": false,
-  "fixed": [],
-  "linked": [],
-  "access": "restricted",
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [],
-  "packages": ["modules/*"]
+  "snapshot": {
+    "develop": "beta",
+    "release": "rc"
+  }
 }

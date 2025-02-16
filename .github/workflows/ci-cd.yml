@@ -33,19 +33,44 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          npm install --save-dev @changesets/cli
+          npm install --save-dev @changesets/cli @changesets/apply-release-plan conventional-changelog-conventionalcommits
 
-      - name: Create and apply Changesets versioning
-        id: changesets
+      - name: Gerar versões automaticamente com Conventional Commits
         run: |
+          npx changeset status --json > changeset-status.json
+          if [[ $(jq '.releases | length' changeset-status.json) -eq 0 ]]; then
+            echo "⚠️ Nenhuma alteração encontrada para versionamento."
+            exit 0
+          fi
+
+          echo "📦 Gerando nova versão baseada nos commits..."
           npx changeset version
+
+          # Commit das mudanças
+          git add .
+          git commit -m "chore(release): versão gerada automaticamente [skip ci]"
+          git push
+
+          # Criar tags para cada versão
+          for module in $(jq -r '.releases[].name' changeset-status.json); do
+            version=$(jq -r --arg name "$module" '.releases[] | select(.name == $name) | .newVersion' changeset-status.json)
+            git tag "${module}-v${version}"
+            git push origin "${module}-v${version}"
+          done
+
+      - name: Criar changelog usando Conventional Commits
+        run: |
+          npx conventional-changelog -p conventionalcommits -i CHANGELOG.md -s
+          git add CHANGELOG.md
+          git commit -m "docs: Atualiza CHANGELOG automaticamente [skip ci]"
+          git push
 
       - name: Capture versions from Changesets
         id: set-versions
         run: |
           echo "🔍 Capturando versões geradas pelo Changesets..."
-          MODULE_VERSIONS_JSON=$(jq -n 'reduce inputs as $item ({}; . + {($item.name): $item.version})' modules/*/build.gradle.kts | jq -s 'add')
-          echo "module_versions=$MODULE_VERSIONS_JSON" >> $GITHUB_OUTPUT
+          MODULE_VERSIONS_JSON=$(jq -n 'reduce inputs as $item ({}; . + {($item.name): $item.version})' **/package.json | jq -s 'add')
+          echo "module_versions=$MODULE_VERSIONS_JSON" >> $GITHUB_ENV
           echo "📦 Versões capturadas: $MODULE_VERSIONS_JSON"
 
   build-modules:
