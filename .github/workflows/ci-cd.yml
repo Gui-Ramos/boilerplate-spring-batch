@@ -103,10 +103,12 @@ jobs:
 
       - name: Build and Publish ${{ matrix.module }}
         run: |
-          VERSION=$(jq -r '."${{ matrix.module }}"' <<< '${{ needs.release.outputs.module_versions }}')
-          if [[ "$VERSION" != "null" ]]; then
+          VERSION=$(jq -r '."${{ matrix.module }}" // empty' <<< '${{ needs.release.outputs.module_versions }}')
+          if [[ -n "$VERSION" ]]; then
             echo "📦 Buildando ${{ matrix.module }} versão $VERSION"
             ./gradlew :${{ matrix.module }}:publish -P${{ matrix.module }}Version=$VERSION
+          else
+            echo "⚠️ Nenhuma versão encontrada para ${{ matrix.module }}, pulando build."
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
