@@ -16,7 +16,7 @@
         {
             "preset": "angular",
             "releaseRules": [
-              {"scope": "common-library", "release": "minor"}
+              {"scope": "common-library", "release": "minor"},
               {"scope": "process-calendar-job", "release": "minor"}
             ]
         }
