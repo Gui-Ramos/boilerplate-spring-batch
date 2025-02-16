@@ -30,6 +30,11 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Fetch complete history
+        run: |
+          git fetch --unshallow
+          git fetch --tags
+
       - name: Install dependencies
         run: |
           npm init -y
