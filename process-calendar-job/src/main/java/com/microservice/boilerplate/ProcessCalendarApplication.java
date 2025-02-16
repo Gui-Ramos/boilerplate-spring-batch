@@ -14,4 +14,3 @@ public class ProcessCalendarApplication {
         SpringApplication.run(ProcessCalendarApplication.class, args);
     }
 }
-
