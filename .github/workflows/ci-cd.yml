@@ -32,6 +32,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          npm init -y
           npm install
           npm install --save-dev @changesets/cli @changesets/apply-release-plan conventional-changelog-conventionalcommits
 
