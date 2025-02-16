@@ -1,3 +1,14 @@
+# [1.0.0-beta.14](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2025-02-16)
+
+
+### Bug Fixes
+
+* **common-library:** adjusts common-library submodule on .releaserc ([1f07704](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/1f077047fe74fc786393bfa9ae85dc63fa60fa92))
+* **common-library:** adjusts common-library submodule on .releaserc ([cbdbb7a](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/cbdbb7ab7afe3cd7a530eff953f76e7dca8d48b2))
+* **common-library:** remove secrets ([98d2d69](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/98d2d69db2141ea4bec70fb6d4d67a2a5aa881b8))
+* **common-library:** remove secrets ([4996e89](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/4996e8966df4337f4848708162171ec197551986))
+* **common-library:** set build common-library to publish ([07c78e0](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/07c78e01a83af90c484a8e4cfd403e3734eaa3d8))
+
 # [1.0.0-beta.13](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2025-02-15)
 
 
