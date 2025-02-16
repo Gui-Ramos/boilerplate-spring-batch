@@ -1,5 +1,5 @@
 {
-  "changelog": ["@changesets/changelog-github", {"preset": "conventionalcommits"}, { "repo": "boilerplate-spring-batch" }],
+  "changelog": ["@changesets/changelog-github", {"preset": "conventionalcommits", "repo": "boilerplate-spring-batch"}],
   "commit": false,
   "access": "public",
   "baseBranch": "main",
