@@ -30,10 +30,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch complete history
+      - name: Ensure full git history
         run: |
-          git fetch --unshallow
-          git fetch --tags
+          git fetch --unshallow || true
+          git fetch --all
 
       - name: Install dependencies
         run: |
