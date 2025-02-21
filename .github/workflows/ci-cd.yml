@@ -43,7 +43,7 @@ jobs:
           git config --global user.name "GitHub Actions"
 
       - name: Run Lerna Versioning
-        run: lerna init && lerna version --yes --no-push --preid ${{ env.preid }}
+        run: lerna version --yes --no-push --preid ${{ env.preid }}
 
       - name: Push Changes
         run: |
