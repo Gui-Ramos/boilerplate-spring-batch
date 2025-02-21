@@ -42,8 +42,19 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
 
+      - name: Determine Preid
+        id: preid
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            echo "preid=beta" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/release" ]]; then
+            echo "preid=rc" >> $GITHUB_ENV
+          fi
+
       - name: Run Lerna Versioning
-        run: lerna version --yes --no-push --preid ${{ env.preid }}
+        run: |
+          lerna init && lerna version --yes --no-push --conventional-prerelease --preid ${{ env.preid }}
+          echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Push Changes
         run: |
