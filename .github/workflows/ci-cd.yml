@@ -53,7 +53,7 @@ jobs:
 
       - name: Run Lerna Versioning
         run: |
-          lerna init && lerna version --yes --no-push --conventional-prerelease --preid ${{ env.preid }}
+          lerna version --yes --no-push --conventional-prerelease --preid ${{ env.preid }}
           echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Push Changes
