@@ -47,13 +47,11 @@ jobs:
           for dir in modules/*/; do
             MODULE_NAME=$(basename "$dir")
             echo "Creating package.json for $MODULE_NAME"
-            cat <<EOT > "$dir/package.json"
-            {
-              "name": "$MODULE_NAME",
-              "version": "0.0.0",
-              "private": true
-            }
-            EOT
+            echo "{
+              \"name\": \"$MODULE_NAME\",
+              \"version\": \"0.0.0\",
+              \"private\": true
+            }" > "$dir/package.json"
           done
 
       - name: Debug Lerna List
