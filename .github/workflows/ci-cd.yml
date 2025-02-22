@@ -72,7 +72,7 @@ jobs:
 
       - name: Publish Changed Modules with Gradle
         run: |
-          CHANGED_MODULES=$(lerna changed --json | jq -r '.[].location' | xargs -n 1 basename)
+          CHANGED_MODULES=$(lerna changed --json | jq -r '.[].name')
           for module in $CHANGED_MODULES; do
             if [ -d "modules/$module" ]; then
               echo "Publishing $module with version $VERSION"
