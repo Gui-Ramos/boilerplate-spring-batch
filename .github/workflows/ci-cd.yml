@@ -42,6 +42,23 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
 
+      - name: Generate package.json for each module
+        run: |
+          for dir in modules/*/; do
+            MODULE_NAME=$(basename "$dir")
+            echo "Creating package.json for $MODULE_NAME"
+            cat <<EOT > "$dir/package.json"
+            {
+              "name": "$MODULE_NAME",
+              "version": "0.0.0",
+              "private": true
+            }
+            EOT
+          done
+
+      - name: Debug Lerna List
+        run: lerna ls
+
       - name: Determine Versioning Strategy
         id: versioning
         run: |
