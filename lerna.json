@@ -1,12 +1,11 @@
 {
   "npmClient": "npm",
-  "useWorkspaces": true,
   "version": "independent",
   "packages": ["modules/*"],
   "command": {
     "version": {
       "conventionalCommits": true,
-      "allowBranch": ["dev", "release"],
+      "allowBranch": ["develop", "release", "main"],
       "preid": "beta",
       "message": "chore(release): publish [skip ci]"
     }
