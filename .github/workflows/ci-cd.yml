@@ -45,6 +45,7 @@ jobs:
       - name: Determine Preid
         id: preid
         run: |
+          echo "${{ github.ref }}"
           if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
             echo "entrou dev"
             echo "PREID=beta" >> $GITHUB_ENV
