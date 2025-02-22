@@ -53,10 +53,10 @@ jobs:
             echo "PREID=rc" >> $GITHUB_ENV
           fi
 
-          - name: Run Lerna Versioning
-            run: |
-              lerna version --yes --no-push --conventional-prerelease --preid ${{ env.PREID }}
-              echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+      - name: Run Lerna Versioning
+        run: |
+          lerna version --yes --no-push --conventional-prerelease --preid ${{ env.PREID }}
+          echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Push Changes
         run: |
