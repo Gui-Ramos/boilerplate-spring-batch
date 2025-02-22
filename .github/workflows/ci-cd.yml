@@ -74,7 +74,12 @@ jobs:
         run: |
           echo "Checking for changed modules..."
           CHANGED_MODULES=$(lerna changed --json | jq -r '.[].name')
-          echo "Changed modules: $CHANGED_MODULES"
+          if [ -z "$CHANGED_MODULES" ]; then
+            echo "No modules changed. Exiting."
+            exit 0
+          else
+            echo "Changed modules: $CHANGED_MODULES"
+          fi
           echo "CHANGED_MODULES=$CHANGED_MODULES" >> $GITHUB_ENV
 
       - name: Publish Changed Modules with Gradle
