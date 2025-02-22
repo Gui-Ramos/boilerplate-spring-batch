@@ -42,21 +42,21 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
 
-      - name: Determine Preid
-        id: preid
+      - name: Determine Versioning Strategy
+        id: versioning
         run: |
-          echo "${{ github.ref }}"
-          if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
-            echo "entrou dev"
-            echo "PREID=beta" >> $GITHUB_ENV
+          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "VERSION_COMMAND=lerna version --yes --no-push --conventional-prerelease --preid beta" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/release" ]]; then
-            echo "entrou release"
-            echo "PREID=rc" >> $GITHUB_ENV
+            echo "VERSION_COMMAND=lerna version --yes --no-push --conventional-prerelease --preid rc" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "VERSION_COMMAND=lerna version --yes --no-push --conventional-graduate" >> $GITHUB_ENV
           fi
+      
 
       - name: Run Lerna Versioning
         run: |
-          lerna version --yes --no-push --conventional-prerelease --preid ${{ env.PREID }}
+          $VERSION_COMMAND
           echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Push Changes
