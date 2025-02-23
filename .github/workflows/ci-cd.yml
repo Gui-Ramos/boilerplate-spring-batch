@@ -111,7 +111,7 @@ jobs:
           
               echo "Publishing $module with version $VERSION_NO_MODULE"
               ./gradlew :modules:$module:publish -P$CAMEL_CASE_MODULE=$VERSION_NO_MODULE
-              cd -
+              
             fi
           done
         env:
