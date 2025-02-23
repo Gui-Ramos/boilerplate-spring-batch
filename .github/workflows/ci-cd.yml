@@ -50,7 +50,7 @@ jobs:
             echo "{
               \"name\": \"$MODULE_NAME\",
               \"version\": \"0.0.0\",
-              \"private\": true
+              \"private\": false
             }" > "$dir/package.json"
           done
 
