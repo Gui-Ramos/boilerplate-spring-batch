@@ -43,6 +43,7 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
+          git config set advice.addIgnoredFile false
 
       - name: Generate package.json for each module
         run: |
