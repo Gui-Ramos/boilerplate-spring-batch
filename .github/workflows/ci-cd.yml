@@ -58,7 +58,10 @@ jobs:
         run: find modules -name "package.json" -exec cat {} \;
 
       - name: Debug Lerna List
-        run: lerna ls
+        run: |
+          lerna clean --yes
+          lerna bootstrap --hoist
+          lerna ls
 
       - name: Determine Versioning Strategy
         id: versioning
