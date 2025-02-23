@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-beta.9](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/common-library@0.1.0-beta.8...common-library@0.1.0-beta.9) (2025-02-23)
+
+
+### Bug Fixes
+
+* adjusts publish step with gradle ([5b1d2cd](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/5b1d2cd36343521ac743389cae355ad4de2c1e3d))
+
+
+
+
+
 # [0.1.0-beta.8](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/common-library@0.1.0-beta.7...common-library@0.1.0-beta.8) (2025-02-23)
 
 **Note:** Version bump only for package common-library
