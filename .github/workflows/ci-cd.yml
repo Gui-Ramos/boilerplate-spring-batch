@@ -76,14 +76,17 @@ jobs:
       - name: List Changed Modules
         run: |
           echo "Checking for changed modules..."
-          CHANGED_MODULES=$(lerna changed --json | jq -r '.[].name')
-          if [ -z "$CHANGED_MODULES" ]; then
+          CHANGED_MODULES=$(npx lerna changed --json | jq -r '.[].name' | tr '\n' ' ')
+
+          if [[ -z "$CHANGED_MODULES" ]]; then
             echo "No modules changed. Exiting."
             exit 0
           else
             echo "Changed modules: $CHANGED_MODULES"
           fi
+
           echo "CHANGED_MODULES=$CHANGED_MODULES" >> $GITHUB_ENV
+      
 
       - name: Run Lerna Versioning
         run: |
