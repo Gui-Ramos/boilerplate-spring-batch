@@ -60,7 +60,6 @@ jobs:
       - name: Debug Lerna List
         run: |
           lerna clean --yes
-          lerna bootstrap --hoist
           lerna ls
 
       - name: Determine Versioning Strategy
