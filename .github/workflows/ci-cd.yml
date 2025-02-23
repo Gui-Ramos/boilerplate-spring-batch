@@ -71,7 +71,8 @@ jobs:
 
       - name: Run Lerna Versioning
         run: |
-          rm package-lock.json
+          rm package-lock.json 
+          rm ./modules/**/package.json
           $VERSION_COMMAND
           echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
