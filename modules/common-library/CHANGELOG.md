@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-beta.4](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/common-library@0.1.0-beta.3...common-library@0.1.0-beta.4) (2025-02-23)
+
+
+### Bug Fixes
+
+* debug pipeline ([b232e9d](https://github.com/Gui-Ramos/boilerplate-spring-batch/commit/b232e9d52dcc24edc2029b97594c041c07a25072))
+
+
+
+
+
 # [0.1.0-beta.3](https://github.com/Gui-Ramos/boilerplate-spring-batch/compare/common-library@0.1.0-beta.2...common-library@0.1.0-beta.3) (2025-02-23)
 
 **Note:** Version bump only for package common-library
