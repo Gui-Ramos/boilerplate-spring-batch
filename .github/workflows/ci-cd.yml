@@ -59,6 +59,7 @@ jobs:
 
       - name: Debug Lerna List
         run: |
+          ls -l
           lerna ls --all
 
       - name: Determine Versioning Strategy
