@@ -8,7 +8,7 @@ plugins {
 
 
 
-version = project.findProperty("processCalendarJobVersion") ?: "1.0.0"
+version = project.findProperty("process-calendar-job-version") ?: "1.0.0"
 
 tasks.jar {
     archiveBaseName.set('process-calendar-job')  // Define o nome do arquivo JAR
