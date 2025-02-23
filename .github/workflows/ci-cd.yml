@@ -59,7 +59,7 @@ jobs:
 
       - name: Debug Lerna List
         run: |
-          lerna ls
+          lerna ls --all
 
       - name: Determine Versioning Strategy
         id: versioning
@@ -92,7 +92,7 @@ jobs:
       - name: List Changed Modules
         run: |
           echo "Checking for changed modules..."
-          CHANGED_MODULES=$(lerna changed --json | jq -r '.[].name')
+          CHANGED_MODULES=$(lerna changed --all --json | jq -r '.[].name')
           if [ -z "$CHANGED_MODULES" ]; then
             echo "No modules changed. Exiting."
             exit 0
