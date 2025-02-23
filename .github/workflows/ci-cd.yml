@@ -110,7 +110,7 @@ jobs:
               CAMEL_CASE_MODULE=$(echo "$module" | awk -F'-' '{ for (i=1; i<=NF; i++) { if (i==1) printf "%s", $i; else printf "%s%s", toupper(substr($i,1,1)), substr($i,2) } }')Version
           
               echo "Publishing $module with version $VERSION_NO_MODULE"
-              ./gradlew :$module:publish -P$CAMEL_CASE_MODULE=$VERSION_NO_MODULE
+              ./gradlew :modules:$module:publish -P$CAMEL_CASE_MODULE=$VERSION_NO_MODULE
               cd -
             fi
           done
