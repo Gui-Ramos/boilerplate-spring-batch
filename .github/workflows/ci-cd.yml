@@ -112,7 +112,7 @@ jobs:
               VERSION_NO_MODULE=$(echo $VERSION | sed 's/^.*@//')              
             
               echo "Publishing module $module with version $VERSION_NO_MODULE"
-              ./gradlew :modules:$module:publish -P$module=$VERSION_NO_MODULE
+              ./gradlew :modules:$module:publish -P$module-version=$VERSION_NO_MODULE
               
             fi
           done
