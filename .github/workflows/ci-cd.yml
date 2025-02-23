@@ -54,6 +54,9 @@ jobs:
             }" > "$dir/package.json"
           done
 
+      - name: Verify package.json files
+        run: find modules -name "package.json" -exec cat {} \;
+
       - name: Debug Lerna List
         run: lerna ls
 
