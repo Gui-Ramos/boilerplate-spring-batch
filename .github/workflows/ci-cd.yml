@@ -108,8 +108,8 @@ jobs:
             if [ -d "modules/$module" ]; then
               VERSION_NO_MODULE=$(echo $VERSION | sed 's/^.*@//')
               CAMEL_CASE_MODULE=$(echo "$module" | awk -F'-' '{ for (i=1; i<=NF; i++) { if (i==1) printf "%s", $i; else printf "%s%s", toupper(substr($i,1,1)), substr($i,2) } }')Version
-          
-              echo "Publishing $module with version $VERSION_NO_MODULE"
+            
+              echo "Publishing $CAMEL_CASE_MODULE with version $VERSION_NO_MODULE"
               ./gradlew :modules:$module:publish -P$CAMEL_CASE_MODULE=$VERSION_NO_MODULE
               
             fi
