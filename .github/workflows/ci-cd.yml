@@ -76,19 +76,13 @@ jobs:
       - name: List Changed Modules
         run: |
           echo "Checking for changed modules..."
-
-          # Lista os módulos alterados
-          CHANGED_MODULES=$(lerna changed --json | jq -r '.[].name' | sed 's/@.*//')
-
-          # Verifica se há módulos alterados
+          CHANGED_MODULES=$(lerna changed --json | jq -r '.[].name')
           if [ -z "$CHANGED_MODULES" ]; then
             echo "No modules changed. Exiting."
             exit 0
           else
             echo "Changed modules: $CHANGED_MODULES"
           fi
-
-          # Exporta os módulos alterados para o GitHub Actions
           echo "CHANGED_MODULES=$CHANGED_MODULES" >> $GITHUB_ENV
 
       - name: Run Lerna Versioning
@@ -112,9 +106,11 @@ jobs:
         run: |
           for module in $CHANGED_MODULES; do
             if [ -d "modules/$module" ]; then
-              echo "Publishing $module with version $VERSION"
+              VERSION_NO_MODULE=$(echo $VERSION | sed 's/^.*@//')
+
+              echo "Publishing $module with version $VERSION_NO_MODULE"
               cd modules/$module
-              ./gradlew publish -P${module}Version=$VERSION
+              ./gradlew publish -P${module}Version=$VERSION_NO_MODULE
               cd -
             fi
           done
