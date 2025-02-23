@@ -50,13 +50,11 @@ jobs:
             MODULE_NAME=$(basename "$dir")
             if [ ! -f "$dir/package.json" ]; then
               echo "Creating package.json for $MODULE_NAME"
-              cat <<EOT > "$dir/package.json"
-              {
-                "name": "$MODULE_NAME",
-                "version": "0.0.0",
-                "private": true
-              }
-              EOT
+              echo "{
+                  \"name\": \"$MODULE_NAME\",
+                  \"version\": \"0.0.0\",
+                  \"private\": false
+                }" > "$dir/package.json"
             fi
             done
 
