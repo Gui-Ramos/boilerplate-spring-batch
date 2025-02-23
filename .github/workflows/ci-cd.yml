@@ -73,6 +73,18 @@ jobs:
             echo "VERSION_COMMAND=lerna version --yes --no-push --conventional-commits" >> $GITHUB_ENV
           fi
 
+      - name: List Changed Modules
+        run: |
+          echo "Checking for changed modules..."
+          CHANGED_MODULES=$(npx lerna changed --json | jq -r '.[].name')
+          if [ -z "$CHANGED_MODULES" ]; then
+            echo "No modules changed. Exiting."
+            exit 0
+          else
+            echo "Changed modules: $CHANGED_MODULES"
+          fi
+          echo "CHANGED_MODULES=$CHANGED_MODULES" >> $GITHUB_ENV
+
       - name: Run Lerna Versioning
         run: |
           rm -f package-lock.json
@@ -89,18 +101,6 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
           server-id: github
-
-      - name: List Changed Modules
-        run: |
-          echo "Checking for changed modules..."
-          CHANGED_MODULES=$(npx lerna changed --json | jq -r '.[].name')
-          if [ -z "$CHANGED_MODULES" ]; then
-            echo "No modules changed. Exiting."
-            exit 0
-          else
-            echo "Changed modules: $CHANGED_MODULES"
-          fi
-          echo "CHANGED_MODULES=$CHANGED_MODULES" >> $GITHUB_ENV
 
       - name: Publish Changed Modules with Gradle
         run: |
