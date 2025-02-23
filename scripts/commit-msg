@@ -6,7 +6,7 @@ commit_message=$(cat $1)
 
 # Regex para validar commits com o formato "tipo(scope): mensagem"
 # Agora o scope pode ser múltiplos módulos separados por vírgula
-if echo "$commit_message" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore)((\([a-zA-Z0-9_,\-]+\))): .+'; then
+if echo "$commit_message" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore)((\([a-zA-Z0-9_,\-]+\))*): .+'; then
     echo "Mensagem de commit válida (Conventional Commit)."
     exit 0
 fi
