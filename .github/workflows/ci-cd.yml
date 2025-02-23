@@ -8,7 +8,6 @@ on:
       - main
 
 jobs:
-
   release:
     runs-on: ubuntu-latest
     outputs:
@@ -23,7 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Garante que todo o histórico do repositório seja obtido
+          fetch-depth: 0  # Obtém todo o histórico do repositório
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -32,10 +31,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm init -y
           npm install
-          npm install -g lerna
-          npm install --save-dev commitizen standard-version cz-conventional-changelog
+          npm install --save-dev lerna-lite commitizen standard-version cz-conventional-changelog
 
       - name: Config Git Identity
         run: |
@@ -46,36 +43,35 @@ jobs:
         run: |
           for dir in modules/*/; do
             MODULE_NAME=$(basename "$dir")
-            echo "Creating package.json for $MODULE_NAME"
-            echo "{
-              \"name\": \"$MODULE_NAME\",
-              \"version\": \"0.0.0\",
-              \"private\": false
-            }" > "$dir/package.json"
-          done
-
-      - name: Verify package.json files
-        run: find modules -name "package.json" -exec cat {} \;
+            if [ ! -f "$dir/package.json" ]; then
+              echo "Creating package.json for $MODULE_NAME"
+              cat <<EOT > "$dir/package.json"
+              {
+                "name": "$MODULE_NAME",
+                "version": "0.0.0",
+                "private": true
+              }
+              EOT
+            fi
+            done
 
       - name: Debug Lerna List
-        run: |
-          ls -l
-          lerna ls --all
+        run: npx lerna list
 
       - name: Determine Versioning Strategy
         id: versioning
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "VERSION_COMMAND=lerna version --yes --no-push --conventional-prerelease --preid beta" >> $GITHUB_ENV
+            echo "VERSION_COMMAND=npx lerna version --yes --no-push --conventional-prerelease --preid beta" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/release" ]]; then
-            echo "VERSION_COMMAND=lerna version --yes --no-push --conventional-prerelease --preid rc" >> $GITHUB_ENV
+            echo "VERSION_COMMAND=npx lerna version --yes --no-push --conventional-prerelease --preid rc" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "VERSION_COMMAND=lerna version --yes --no-push --conventional-graduate" >> $GITHUB_ENV
+            echo "VERSION_COMMAND=npx lerna version --yes --no-push --conventional-graduate" >> $GITHUB_ENV
           fi
-      
 
       - name: Run Lerna Versioning
         run: |
+          rm -f package-lock.json
           $VERSION_COMMAND
           echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
@@ -93,7 +89,7 @@ jobs:
       - name: List Changed Modules
         run: |
           echo "Checking for changed modules..."
-          CHANGED_MODULES=$(lerna changed --all --json | jq -r '.[].name')
+          CHANGED_MODULES=$(npx lerna changed --json | jq -r '.[].name')
           if [ -z "$CHANGED_MODULES" ]; then
             echo "No modules changed. Exiting."
             exit 0
