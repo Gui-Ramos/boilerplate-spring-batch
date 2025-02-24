@@ -15,7 +15,7 @@ tasks.jar {
 }
 
 dependencies {
-    implementation 'com.microservice.boilerplate:common-library:+'
+    implementation 'com.microservice.boilerplate:common-library:0.1.0-beta.14'
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
